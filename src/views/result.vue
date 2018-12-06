@@ -1,15 +1,26 @@
 <template>
   <div class="result">
-    <ul>
-      <li>红色：{{res.red}}</li>
-      <li>蓝色：{{res.blue}}</li>
-      <li>黄色：{{res.yellow}}</li>
-      <li>绿色：{{res.green}}</li>
-    </ul>
+    <chart />
+    <mt-button
+      type="primary"
+      @click="show('blue')"
+    >蓝色</mt-button>
+    <mt-button
+      type="danger"
+      @click="show('red')"
+    >红色</mt-button>
+    <mt-button
+      style="background-color:	#FFD700;color:#fff;"
+      @click="show('yellow')"
+    >黄色</mt-button>
+    <mt-button
+      style="background-color:green;color:#fff;"
+      @click="show('green')"
+    >绿色</mt-button>
     <div class="content">
       <dl>
         <keep-alive>
-          <div v-if="res.red>res.blue?(res.red>res.yellow?(res.red>res.green?true:false):false):false">
+          <div v-if="red">
             <dt>红色性格</dt>
             <dd>
               1.阳光心态，积极快乐
@@ -38,7 +49,7 @@
               红色比其他性格更容易去改变，因为他们喜欢新主意，新思想，新事物，还因为他们在变化和创造过程中得到无限的乐趣，由于这个世界是无穷的，所以他们能够一再地经历这种狂喜。
             </dd>
           </div>
-          <div v-else-if="res.blue>res.red?(res.blue>res.yellow?(res.blue>res.green?true:false):false):false">
+          <div v-else-if="blue">
             <dt>蓝色性格</dt>
             <dd>
               1.思想深邃，独立思考
@@ -62,7 +73,7 @@
               红色要大快乐，但是小快乐一个也不能少.而蓝色如果有大快乐，小快乐我宁可一个都不要
             </dd>
           </div>
-          <div v-else-if="res.yellow>res.red?(res.yellow>res.blue?(res.yellow>res.green?true:false):false):false">
+          <div v-else-if="yellow">
             <dt>黄色性格</dt>
             <dd>
               1.目标导向，永无止境
@@ -91,7 +102,7 @@
               只要有什么新想法，立刻就会付诸实行.这样的行动力是黄色的能量所赐，同时也起到了消除忧郁的作用。他们的日程表总是排的满满的，工作以外的时间会被旅行，运动等活动填满，什么也不做的空闲时间，对他们来说，不仅非常不健全，甚至还是一种恐怖.
             </dd>
           </div>
-          <div v-else-if="res.green>res.red?(res.green>res.yellow?(res.green>res.blue?true:false):false):false">
+          <div v-else-if="green">
             <dt>绿色性格</dt>
             <dd>
               1.中庸之道，稳定低调
@@ -116,35 +127,69 @@
   </div>
 </template>
 <script>
+import chart from "../components/chart.vue";
+import { MessageBox } from "mint-ui";
 export default {
   data() {
     return {
-      res: {
-        // red: this.$store.state.res.red,
-        // blue: this.$store.state.res.blue,
-        // yellow: this.$store.state.res.yellow,
-        // green: this.$store.state.res.green
-      }
+      red: false,
+      blue: false,
+      yellow: false,
+      green: false
     };
   },
   created() {
-    this.$store.commit("result");
-    [this.res.red, this.res.blue, this.res.yellow, this.res.green] = [
-      this.$store.state.res.red,
-      this.$store.state.res.blue,
-      this.$store.state.res.yellow,
-      this.$store.state.res.green
-    ];
-    console.log(this.$store.state.res);
-    console.log(this.res);
+    MessageBox.alert(
+      "打开支付宝首页搜“570660978”领红包，领到大红包的小伙伴赶紧使用哦！",
+      "发福利啦！"
+    );
   },
   methods: {
-    
+    show(data) {
+      [this.red, this.blue, this.yellow, this.green] = [
+        false,
+        false,
+        false,
+        false
+      ];
+      switch (data) {
+        case "red":
+          this.red = true;
+          break;
+        case "blue":
+          this.blue = true;
+          break;
+        case "yellow":
+          this.yellow = true;
+          break;
+        case "green":
+          this.green = true;
+          break;
+        default:
+      }
+    }
+  },
+  components: {
+    chart
   }
 };
 </script>
 <style lang="scss">
+@keyframes identifier {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 .result {
+  text-align: center;
+  .mint-button {
+    margin-left: 20px;
+  }
   ul {
     li {
       font-size: 0.4rem;
@@ -154,9 +199,11 @@ export default {
     dl {
       dt {
         font-size: 0.3rem;
+        animation: identifier 0.3s ease 1 backwards;
       }
       dd {
         font-size: 0.3rem;
+        animation: identifier 0.3s ease 1 backwards;
       }
     }
   }

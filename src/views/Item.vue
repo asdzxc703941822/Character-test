@@ -285,12 +285,6 @@ export default {
 </script>
 <style lang="scss">
 .about {
-  // ul{
-  //   list-style:none;
-  //   font-size:0.30rem;
-  //   li{
-  //   }
-  // }
   .wrap {
     position: absolute;
     top: 50%;
